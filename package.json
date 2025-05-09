@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@google/genai": "^0.13.0",
+    "@headlessui/react": "^1.7.17",
     "cors": "^2.8.5",
-    "daisyui": "^5.0.35",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "react": "^17.0.2",

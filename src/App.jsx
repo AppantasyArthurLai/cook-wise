@@ -80,7 +80,7 @@ function App() {
       {/* Footer */}
       <footer className="p-6 bg-gray-900 text-white mt-auto text-center">
         <aside>
-          <p>© 2025 AI 食譜網站 · Powered by React, Vite, TailwindCSS, daisyUI</p>
+          <p>© 2025 AI 食譜網站 · Powered by React, Vite, TailwindCSS, HeadlessUI</p>
         </aside>
       </footer>
     </div>
