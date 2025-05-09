@@ -11,12 +11,15 @@
   },
   "dependencies": {
     "@google/genai": "^0.13.0",
+    "@headlessui/react": "^1.7.17",
     "cors": "^2.8.5",
-    "daisyui": "^5.0.35",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "i18next": "^25.1.2",
+    "i18next-browser-languagedetector": "^8.1.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-i18next": "^15.5.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.0",

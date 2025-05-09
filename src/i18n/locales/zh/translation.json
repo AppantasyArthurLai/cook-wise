@@ -1,0 +1,47 @@
+{
+  "app": {
+    "title": "藝智廚",
+    "subtitle": "輸入您的食材、料理風格和飲食偏好，立即獲得個性化食譜",
+    "slogan": "美食食譜由 藝智廚 為您製作"
+  },
+  "navbar": {
+    "home": "首頁",
+    "popular": "熱門",
+    "seasonal": "季節性",
+    "about": "關於",
+    "createRecipe": "創建您的食譜"
+  },
+  "form": {
+    "mainIngredient": "主要食材",
+    "mainIngredientPlaceholder": "例如：雞胸肉、豆腐、鮭魚...",
+    "cuisineType": "料理風格",
+    "cuisinePlaceholder": "例如：義大利、日本、家常...",
+    "calories": "卡路里 (kcal)",
+    "caloriesPlaceholder": "例如：300",
+    "dietaryRequirements": "飲食要求",
+    "dietaryPlaceholder": "例如：高蛋白、低碳水、素食、無麩質...",
+    "submit": "創建您的食譜",
+    "generating": "生成中..."
+  },
+  "result": {
+    "recipePlaceholder": "您的食譜將顯示在這裡",
+    "fillFormMessage": "填寫表單並點擊提交以獲取您的客製化食譜",
+    "ingredients": "食材",
+    "steps": "步驟",
+    "nutrition": "營養",
+    "suitableFor": "適合族群",
+    "nutritionLabels": {
+      "calories": "卡路里",
+      "protein": "蛋白質",
+      "fat": "脂肪",
+      "carbs": "碳水化合物",
+      "other": "其他"
+    }
+  },
+  "errors": {
+    "fetchFailed": "取得 AI 食譜失敗，請稍後再試"
+  },
+  "footer": {
+    "copyright": "© 2025 藝智廚 · 使用 React、Vite、TailwindCSS、HeadlessUI 打造"
+  }
+}

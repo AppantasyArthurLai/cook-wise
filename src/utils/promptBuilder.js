@@ -1,22 +1,23 @@
 export function buildPrompt({ mainIngredient, cuisine, calorie, special }) {
-  let prompt = `請根據以下條件產生一道食譜，並包含食材、步驟與簡單營養資訊：\n`;
-  if (mainIngredient) prompt += `主食材：${mainIngredient}\n`;
-  if (cuisine) prompt += `料理類型：${cuisine}\n`;
-  if (calorie) prompt += `熱量範圍：${calorie} 大卡\n`;
-  if (special) prompt += `特殊需求：${special}\n`;
-  prompt += `請用條列式清楚呈現。\n`;
-  prompt += `請依照以下 JSON 格式回覆，不要有多餘說明：\n`;
+  let prompt = `Generate a recipe based on the following criteria, including ingredients, steps, and basic nutritional information:\n`;
+  if (mainIngredient) prompt += `Main ingredient: ${mainIngredient}\n`;
+  if (cuisine) prompt += `Cuisine type: ${cuisine}\n`;
+  if (calorie) prompt += `Calorie range: ${calorie} calories\n`;
+  if (special) prompt += `Special requirements: ${special}\n`;
+  prompt += `Please present clearly in a list format.\n`;
+  prompt += `Respond in English.\n`;
+  prompt += `Please use the following JSON format with no additional explanations:\n`;
   prompt += `{
   "title": "",
   "description": "",
   "ingredients": [],
   "steps": [],
   "nutrition": {
-    "熱量": "",
-    "蛋白質": "",
-    "脂肪": "",
-    "碳水化合物": "",
-    "其他": ""
+    "calories": "",
+    "protein": "",
+    "fat": "",
+    "carbohydrates": "",
+    "other": ""
   },
   "suitable": []
 }`;

@@ -24,3 +24,6 @@ yarn-error.log*
 
 # Optional: local config
 *.local
+
+# README.md output
+README.pdf

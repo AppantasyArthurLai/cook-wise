@@ -17,43 +17,19 @@ module.exports = {
         'cream': '#ECF0F1',
         'salt': '#F5F5F5',
         'pepper': '#333333',
+        // 保留 DaisyUI 主題顏色，但以 Tailwind 原生方式定義
+        'primary': '#E67E22',
+        'primary-focus': '#D35400',
+        'secondary': '#2ECC71',
+        'secondary-focus': '#27AE60',
+        'accent': '#3498DB',
+        'accent-focus': '#2980B9',
+        'error': '#F87272',
+        'success': '#36D399',
+        'warning': '#FBBD23',
+        'info': '#3ABFF8',
       },
     },
   },
-  plugins: [require('daisyui')],
-  daisyui: {
-    themes: [
-      {
-        recipeTheme: {
-          "primary": "#E67E22",          // Vibrant orange for primary actions
-          "primary-focus": "#D35400",    // Darker orange for hover states
-          "primary-content": "#ffffff",  // White text on primary buttons
-          
-          "secondary": "#2ECC71",        // Fresh green as secondary color
-          "secondary-focus": "#27AE60",  // Darker green for hover states
-          "secondary-content": "#ffffff",// White text on secondary buttons
-          
-          "accent": "#3498DB",           // Blue accent for highlights
-          "accent-focus": "#2980B9",     // Darker blue for hover states
-          "accent-content": "#ffffff",   // White text on accent elements
-          
-          "neutral": "#2A303C",          // Dark slate for neutral elements
-          "neutral-focus": "#222831",    // Darker slate for hover states
-          "neutral-content": "#ffffff",  // White text on neutral backgrounds
-          
-          "base-100": "#F8F9FA",         // Light background
-          "base-200": "#ECF0F1",         // Slightly darker background for contrast
-          "base-300": "#E2E8F0",         // Even darker background for more contrast
-          "base-content": "#1E293B",     // Dark text on light backgrounds
-          
-          "info": "#3ABFF8",             // Blue for informational messages
-          "success": "#36D399",          // Green for success messages
-          "warning": "#FBBD23",          // Yellow for warning messages
-          "error": "#F87272",            // Red for error messages
-        },
-      },
-      "light",
-    ],
-    darkTheme: "recipeTheme",
-  },
+  plugins: [],
 };
