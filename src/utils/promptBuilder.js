@@ -5,7 +5,7 @@ export function buildPrompt({ mainIngredient, cuisine, calorie, special }) {
   if (calorie) prompt += `Calorie range: ${calorie} calories\n`;
   if (special) prompt += `Special requirements: ${special}\n`;
   prompt += `Please present clearly in a list format.\n`;
-  prompt += `Respond in Traditional Chinese (zh-TW).\n`;
+  prompt += `Respond in English.\n`;
   prompt += `Please use the following JSON format with no additional explanations:\n`;
   prompt += `{
   "title": "",

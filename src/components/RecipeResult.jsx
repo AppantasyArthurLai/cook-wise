@@ -4,7 +4,7 @@ export default function RecipeResult({ result }) {
   if (!result) return null;
   return (
     <div className="bg-white shadow-xl rounded-lg w-full max-w-xl p-6 space-y-4">
-      {/* 標題與描述 */}
+      {/* Title and Description */}
       <div>
         <h3 className="text-2xl font-bold mb-2 flex items-center gap-2 text-culinary-dark">
           <span role="img" aria-label="recipe">🍽️</span>
@@ -12,11 +12,11 @@ export default function RecipeResult({ result }) {
         </h3>
         <p className="text-gray-600 mb-2">{result.description}</p>
       </div>
-      {/* 食材區塊 */}
+      {/* Ingredients Section */}
       <div>
         <div className="flex items-center my-3">
           <div className="flex-grow h-px bg-gray-300"></div>
-          <span className="px-3 text-gray-500 font-medium">食材</span>
+          <span className="px-3 text-gray-500 font-medium">Ingredients 食材</span>
           <div className="flex-grow h-px bg-gray-300"></div>
         </div>
         <ul className="list-disc ml-6">
@@ -25,11 +25,11 @@ export default function RecipeResult({ result }) {
           ))}
         </ul>
       </div>
-      {/* 步驟區塊 */}
+      {/* Steps Section */}
       <div>
         <div className="flex items-center my-3">
           <div className="flex-grow h-px bg-gray-300"></div>
-          <span className="px-3 text-gray-500 font-medium">步驟</span>
+          <span className="px-3 text-gray-500 font-medium">Steps 步驟</span>
           <div className="flex-grow h-px bg-gray-300"></div>
         </div>
         <ol className="list-decimal ml-6">
@@ -38,22 +38,22 @@ export default function RecipeResult({ result }) {
           ))}
         </ol>
       </div>
-      {/* 營養資訊區塊 */}
+      {/* Nutrition Information */}
       <div>
         <div className="flex items-center my-3">
           <div className="flex-grow h-px bg-gray-300"></div>
-          <span className="px-3 text-gray-500 font-medium">營養資訊</span>
+          <span className="px-3 text-gray-500 font-medium">Nutrition 營養</span>
           <div className="flex-grow h-px bg-gray-300"></div>
         </div>
         <div className="space-y-2">
           {Object.entries(result.nutrition).map(([k, v]) => {
-            // 建立英文屬性名稱到中文顯示名稱的映射
+            // Map nutrition property names to display labels
             const nutritionLabels = {
-              "calories": "熱量",
-              "protein": "蛋白質",
-              "fat": "脂肪",
-              "carbohydrates": "碳水化合物",
-              "other": "其他"
+              "calories": "Calories",
+              "protein": "Protein",
+              "fat": "Fat",
+              "carbohydrates": "Carbs",
+              "other": "Other"
             };
             
             return (
@@ -62,19 +62,19 @@ export default function RecipeResult({ result }) {
                 className="border border-gray-300 rounded-lg px-4 py-2 w-full flex items-center text-gray-700 text-sm"
                 style={{ wordBreak: 'break-word', whiteSpace: 'pre-line' }}
               >
-                <span className="font-semibold mr-2">{nutritionLabels[k] || k}：</span>
+                <span className="font-semibold mr-2">{nutritionLabels[k] || k}: </span>
                 <span>{v}</span>
               </div>
             );
           })}
         </div>
       </div>
-      {/* 適合族群區塊 */}
+      {/* Suitable For */}
       {result.suitable && result.suitable.length > 0 && (
         <div>
           <div className="flex items-center my-3">
             <div className="flex-grow h-px bg-gray-300"></div>
-            <span className="px-3 text-gray-500 font-medium">適合族群</span>
+            <span className="px-3 text-gray-500 font-medium">Suitable For 適合族群</span>
             <div className="flex-grow h-px bg-gray-300"></div>
           </div>
           <div className="flex flex-wrap gap-2">

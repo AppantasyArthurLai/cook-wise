@@ -1,4 +1,4 @@
-// 前端呼叫 Gemini Proxy API
+// Frontend call to Gemini Proxy API
 export async function fetchGemini(prompt) {
   const res = await fetch('/api/gemini', {
     method: 'POST',
