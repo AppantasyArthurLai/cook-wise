@@ -49,12 +49,26 @@ function App() {
       // 嘗試解析 JSON
       let data = null;
       try {
-        // 讓 Gemini 回傳有可能前後有雜訊，找出第一個 { 到最後一個 }
-        const jsonStart = res.indexOf('{');
-        const jsonEnd = res.lastIndexOf('}');
-        const jsonStr = res.substring(jsonStart, jsonEnd + 1);
+        // Debug log: 原始回傳內容
+        console.debug('AI 原始回傳內容:', res);
+        let clean = res.trim();
+        // 自動去除 markdown ```json ... ``` 區塊
+        if (clean.startsWith('```json')) {
+          clean = clean.replace(/^```json/, '').replace(/```$/, '').trim();
+        } else if (clean.startsWith('```')) {
+          clean = clean.replace(/^```/, '').replace(/```$/, '').trim();
+        }
+        // 只保留第一個 { 到最後一個 }
+        const jsonStart = clean.indexOf('{');
+        const jsonEnd = clean.lastIndexOf('}');
+        const jsonStr = clean.substring(jsonStart, jsonEnd + 1);
+        // Debug log: 修復後的 JSON 字串
+        console.debug('AI 修正後 JSON 字串:', jsonStr);
         data = JSON.parse(jsonStr);
       } catch (e) {
+        console.error('AI 回傳內容:', res);
+        console.error('修正後嘗試解析的內容:', typeof clean !== 'undefined' ? clean : res);
+        console.error('JSON 解析失敗:', e);
         setError("AI 回傳格式錯誤，請再試一次或調整條件");
         setLoading(false);
         return;
@@ -108,6 +122,19 @@ function App() {
           </button>
         </form>
         {/* 結果區塊 */}
+        {loading && (
+          <div className="flex flex-col items-center justify-center w-full my-8">
+            <span className="loading loading-spinner loading-lg mb-3"></span>
+            <span className="font-bold mb-1">AI 產生中 ...</span>
+            <span className="text-sm text-base-content/60 animate-pulse">
+              條件：
+              {mainIngredient && <span className="mx-1">主食材：{mainIngredient}</span>}
+              {cuisine && <span className="mx-1">料理類型：{cuisine}</span>}
+              {calorie && <span className="mx-1">熱量：{calorie} 大卡</span>}
+              {special && <span className="mx-1">特殊需求：{special}</span>}
+            </span>
+          </div>
+        )}
         {error && <div className="alert alert-error mb-4">{error}</div>}
         {result && (
           <div className="card bg-base-100 shadow-xl w-full max-w-xl p-6 space-y-4">
@@ -140,9 +167,13 @@ function App() {
             {/* 營養資訊區塊 */}
             <div>
               <div className="divider mb-2">營養資訊</div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="space-y-2">
                 {Object.entries(result.nutrition).map(([k, v]) => (
-                  <div key={k} className="badge badge-outline badge-lg px-4 py-2 flex justify-between">
+                  <div
+                    key={k}
+                    className="badge badge-outline badge-lg px-4 py-2 w-full justify-start whitespace-pre-line break-words"
+                    style={{ wordBreak: 'break-word', whiteSpace: 'pre-line' }}
+                  >
                     <span className="font-semibold mr-2">{k}：</span>
                     <span>{v}</span>
                   </div>
