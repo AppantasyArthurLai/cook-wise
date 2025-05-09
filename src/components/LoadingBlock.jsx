@@ -71,12 +71,15 @@ export default function LoadingBlock({ mainIngredient, cuisine, calorie, special
 
   return (
     <div className="flex flex-col items-center justify-center w-full my-8">
-      <span className="loading loading-spinner loading-lg mb-3"></span>
-      <span className="font-bold mb-1">{randomMessage}</span>
-      <span className="text-sm text-base-content/60 w-full" style={{ minHeight: 28 }}>
+      {/* 自定義加載動畫 */}
+      <div className="mb-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-orange-500"></div>
+      </div>
+      <span className="font-bold text-gray-800 mb-2 text-center">{randomMessage}</span>
+      <span className="text-sm text-gray-600 w-full text-center" style={{ minHeight: 28 }}>
         {/*
         {loading && <span className="animate-pulse">專屬短句產生中...</span>}
-        {error && <span className="text-error">{error}</span>}
+        {error && <span className="text-red-500">{error}</span>}
         {!loading && sentence && (
           <span style={marqueeStyle}>
             <span style={marqueeInnerStyle}>{sentence}</span>

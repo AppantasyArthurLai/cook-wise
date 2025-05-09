@@ -39,27 +39,33 @@ function App() {
 
 
   return (
-    <div className="min-h-screen bg-base-200 flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Navbar */}
-      <div className="navbar bg-primary text-primary-content shadow-lg">
+      <div className="bg-orange-500 text-white shadow-lg py-4">
         <div className="container mx-auto px-4">
           <span className="text-2xl font-bold tracking-wide">🍳 AI 食譜網站</span>
         </div>
       </div>
       {/* Main content */}
-      <div className="flex-1 container mx-auto px-4 py-10 flex flex-col items-center">
-        <RecipeForm
-          mainIngredient={mainIngredient}
-          setMainIngredient={setMainIngredient}
-          cuisine={cuisine}
-          setCuisine={setCuisine}
-          calorie={calorie}
-          setCalorie={setCalorie}
-          special={special}
-          setSpecial={setSpecial}
-          loading={loading}
-          onSubmit={handleSubmit}
-        />
+      <div className="flex-1 container mx-auto px-4 py-10 flex flex-col items-center max-w-4xl">
+        <div className="w-full mb-8 text-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">專業 AI 廚師為您設計美味食譜</h1>
+          <p className="text-gray-600">輸入您想料理的主要食材、烹飪風格和特殊需求，讓 AI 為您創建專屬食譜</p>
+        </div>
+        <div className="w-full bg-white rounded-lg shadow-md p-6 border border-gray-200 mb-8">
+          <RecipeForm
+            mainIngredient={mainIngredient}
+            setMainIngredient={setMainIngredient}
+            cuisine={cuisine}
+            setCuisine={setCuisine}
+            calorie={calorie}
+            setCalorie={setCalorie}
+            special={special}
+            setSpecial={setSpecial}
+            loading={loading}
+            onSubmit={handleSubmit}
+          />
+        </div>
         {loading && (
           <LoadingBlock
             mainIngredient={mainIngredient}
@@ -72,7 +78,7 @@ function App() {
         <RecipeResult result={result} />
       </div>
       {/* Footer */}
-      <footer className="footer footer-center p-4 bg-base-300 text-base-content">
+      <footer className="p-6 bg-gray-900 text-white mt-auto text-center">
         <aside>
           <p>© 2025 AI 食譜網站 · Powered by React, Vite, TailwindCSS, daisyUI</p>
         </aside>
