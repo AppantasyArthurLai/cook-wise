@@ -46,16 +46,27 @@ export default function RecipeResult({ result }) {
           <div className="flex-grow h-px bg-gray-300"></div>
         </div>
         <div className="space-y-2">
-          {Object.entries(result.nutrition).map(([k, v]) => (
-            <div
-              key={k}
-              className="border border-gray-300 rounded-lg px-4 py-2 w-full flex items-center text-gray-700 text-sm"
-              style={{ wordBreak: 'break-word', whiteSpace: 'pre-line' }}
-            >
-              <span className="font-semibold mr-2">{k}：</span>
-              <span>{v}</span>
-            </div>
-          ))}
+          {Object.entries(result.nutrition).map(([k, v]) => {
+            // 建立英文屬性名稱到中文顯示名稱的映射
+            const nutritionLabels = {
+              "calories": "熱量",
+              "protein": "蛋白質",
+              "fat": "脂肪",
+              "carbohydrates": "碳水化合物",
+              "other": "其他"
+            };
+            
+            return (
+              <div
+                key={k}
+                className="border border-gray-300 rounded-lg px-4 py-2 w-full flex items-center text-gray-700 text-sm"
+                style={{ wordBreak: 'break-word', whiteSpace: 'pre-line' }}
+              >
+                <span className="font-semibold mr-2">{nutritionLabels[k] || k}：</span>
+                <span>{v}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
       {/* 適合族群區塊 */}
