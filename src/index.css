@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom dark mode styles for modern look */
+body {
+  @apply bg-gray-900 text-gray-200;
+}
+
+h1, h2, h3 {
+  @apply text-white;
+}
+
+/* Card style override for dark mode */
+.card-dark {
+  @apply bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 shadow-xl;
+}
+
+/* For accent color */
+.accent {
+  @apply text-green-400;
+}
