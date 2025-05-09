@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function RecipeResult({ result }) {
+  const { t } = useTranslation();
   if (!result) return null;
   return (
     <div className="bg-white shadow-xl rounded-lg w-full max-w-xl p-6 space-y-4">
@@ -16,7 +18,7 @@ export default function RecipeResult({ result }) {
       <div>
         <div className="flex items-center my-3">
           <div className="flex-grow h-px bg-gray-300"></div>
-          <span className="px-3 text-gray-500 font-medium">Ingredients 食材</span>
+          <span className="px-3 text-gray-500 font-medium">{t('result.ingredients')}</span>
           <div className="flex-grow h-px bg-gray-300"></div>
         </div>
         <ul className="list-disc ml-6">
@@ -29,7 +31,7 @@ export default function RecipeResult({ result }) {
       <div>
         <div className="flex items-center my-3">
           <div className="flex-grow h-px bg-gray-300"></div>
-          <span className="px-3 text-gray-500 font-medium">Steps 步驟</span>
+          <span className="px-3 text-gray-500 font-medium">{t('result.steps')}</span>
           <div className="flex-grow h-px bg-gray-300"></div>
         </div>
         <ol className="list-decimal ml-6">
@@ -42,18 +44,18 @@ export default function RecipeResult({ result }) {
       <div>
         <div className="flex items-center my-3">
           <div className="flex-grow h-px bg-gray-300"></div>
-          <span className="px-3 text-gray-500 font-medium">Nutrition 營養</span>
+          <span className="px-3 text-gray-500 font-medium">{t('result.nutrition')}</span>
           <div className="flex-grow h-px bg-gray-300"></div>
         </div>
         <div className="space-y-2">
           {Object.entries(result.nutrition).map(([k, v]) => {
-            // Map nutrition property names to display labels
+            // Map nutrition property names to display labels using i18n
             const nutritionLabels = {
-              "calories": "Calories",
-              "protein": "Protein",
-              "fat": "Fat",
-              "carbohydrates": "Carbs",
-              "other": "Other"
+              "calories": t('result.nutritionLabels.calories'),
+              "protein": t('result.nutritionLabels.protein'),
+              "fat": t('result.nutritionLabels.fat'),
+              "carbohydrates": t('result.nutritionLabels.carbs'),
+              "other": t('result.nutritionLabels.other')
             };
             
             return (
@@ -74,7 +76,7 @@ export default function RecipeResult({ result }) {
         <div>
           <div className="flex items-center my-3">
             <div className="flex-grow h-px bg-gray-300"></div>
-            <span className="px-3 text-gray-500 font-medium">Suitable For 適合族群</span>
+            <span className="px-3 text-gray-500 font-medium">{t('result.suitableFor')}</span>
             <div className="flex-grow h-px bg-gray-300"></div>
           </div>
           <div className="flex flex-wrap gap-2">

@@ -1,15 +1,18 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { fetchGemini } from "./api";
 import RecipeForm from "./components/RecipeForm";
 import RecipeResult from "./components/RecipeResult";
 import LoadingBlock from "./components/LoadingBlock";
 import ErrorAlert from "./components/ErrorAlert";
+import LanguageSwitcher from "./components/LanguageSwitcher";
 import { buildPrompt } from "./utils/promptBuilder";
 import { parseGeminiResponse } from "./utils/parseGeminiResponse";
 
 
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [mainIngredient, setMainIngredient] = useState("");
   const [cuisine, setCuisine] = useState("");
   const [calorie, setCalorie] = useState("");
@@ -31,7 +34,7 @@ function App() {
       const data = parseGeminiResponse(res);
       setResult(data);
     } catch (err) {
-      setError(err.message || "取得 AI 食譜失敗，請稍後再試");
+      setError(err.message || t('errors.fetchFailed'));
     } finally {
       setLoading(false);
     }
@@ -47,25 +50,26 @@ function App() {
             {/* Logo and brand */}
             <div className="flex items-center space-x-2">
               <span className="text-2xl">🍳</span>
-              <span className="text-2xl font-bold tracking-wide hidden sm:inline">Cook Wise 藝智廚</span>
+              <span className="text-2xl font-bold tracking-wide hidden sm:inline">Cook Wise {i18n.language.startsWith('en') ? '' : t('app.title')}</span>
               <span className="text-2xl font-bold tracking-wide sm:hidden">Cook Wise</span>
             </div>
             
             {/* Center navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#" className="hover:text-[#ECF0F1] transition-colors duration-200 font-medium">Home</a>
-              <a href="#" className="hover:text-[#ECF0F1] transition-colors duration-200 font-medium">Popular</a>
-              <a href="#" className="hover:text-[#ECF0F1] transition-colors duration-200 font-medium">Seasonal</a>
-              <a href="#" className="hover:text-[#ECF0F1] transition-colors duration-200 font-medium">About</a>
+              <a href="#" className="hover:text-[#ECF0F1] transition-colors duration-200 font-medium">{t('navbar.home')}</a>
+              <a href="#" className="hover:text-[#ECF0F1] transition-colors duration-200 font-medium">{t('navbar.popular')}</a>
+              <a href="#" className="hover:text-[#ECF0F1] transition-colors duration-200 font-medium">{t('navbar.seasonal')}</a>
+              <a href="#" className="hover:text-[#ECF0F1] transition-colors duration-200 font-medium">{t('navbar.about')}</a>
             </div>
             
             {/* Right side buttons */}
             <div className="flex items-center space-x-4">
+              <LanguageSwitcher />
               <button className="hidden sm:flex items-center space-x-1 bg-[#2ECC71] hover:bg-[#27AE60] px-3 py-1.5 rounded-full transition-colors duration-200">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
-                <span className="font-medium">Create Your Recipe</span>
+                <span className="font-medium">{t('navbar.createRecipe')}</span>
               </button>
               <button className="sm:hidden flex items-center justify-center bg-[#2ECC71] hover:bg-[#27AE60] p-1.5 rounded-full transition-colors duration-200">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -84,8 +88,8 @@ function App() {
       {/* Main content */}
       <div className="flex-1 container mx-auto px-4 py-10 flex flex-col items-center max-w-6xl">
         <div className="w-full mb-8 text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Gourmet Recipes by 藝智廚</h1>
-          <p className="text-gray-600">Enter your ingredients, cuisine style, and dietary preferences to get a personalized recipe instantly</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('app.slogan')}</h1>
+          <p className="text-gray-600">{t('app.subtitle')}</p>
         </div>
         
         {/* Side-by-side layout for form and result */}
@@ -113,8 +117,8 @@ function App() {
             ) : (
               <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-gray-500">
                 <div className="text-6xl mb-4">🍳</div>
-                <p className="text-lg font-medium">Your recipe will appear here</p>
-                <p className="text-sm">Fill out the form and click submit to get your custom recipe</p>
+                <p className="text-lg font-medium">{t('result.recipePlaceholder')}</p>
+                <p className="text-sm">{t('result.fillFormMessage')}</p>
               </div>
             )}
           </div>
@@ -139,7 +143,7 @@ function App() {
       {/* Footer */}
       <footer className="p-6 bg-gray-900 text-white mt-auto text-center">
         <aside>
-          <p>© 2025 Cook Wise 藝智廚 · Powered by React, Vite, TailwindCSS, HeadlessUI</p>
+          <p>{t('footer.copyright')}</p>
         </aside>
       </footer>
     </div>

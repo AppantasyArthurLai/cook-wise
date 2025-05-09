@@ -1,0 +1,47 @@
+{
+  "app": {
+    "title": "Cook Wise",
+    "subtitle": "Enter your ingredients, cuisine style, and dietary preferences to get a personalized recipe instantly",
+    "slogan": "Gourmet Recipes by Cook Wise, Made for You"
+  },
+  "navbar": {
+    "home": "Home",
+    "popular": "Popular",
+    "seasonal": "Seasonal",
+    "about": "About",
+    "createRecipe": "Create Your Recipe"
+  },
+  "form": {
+    "mainIngredient": "Main Ingredient",
+    "mainIngredientPlaceholder": "E.g., chicken breast, tofu, salmon...",
+    "cuisineType": "Cuisine Type",
+    "cuisinePlaceholder": "E.g., Italian, Japanese, homestyle...",
+    "calories": "Calories (kcal)",
+    "caloriesPlaceholder": "E.g., 300",
+    "dietaryRequirements": "Dietary Requirements",
+    "dietaryPlaceholder": "E.g., high protein, low carb, vegan, gluten-free...",
+    "submit": "Create Your Recipe",
+    "generating": "Generating..."
+  },
+  "result": {
+    "recipePlaceholder": "Your recipe will appear here",
+    "fillFormMessage": "Fill out the form and click submit to get your custom recipe",
+    "ingredients": "Ingredients",
+    "steps": "Steps",
+    "nutrition": "Nutrition",
+    "suitableFor": "Suitable For",
+    "nutritionLabels": {
+      "calories": "Calories",
+      "protein": "Protein",
+      "fat": "Fat",
+      "carbs": "Carbs",
+      "other": "Other"
+    }
+  },
+  "errors": {
+    "fetchFailed": "Failed to get AI recipe, please try again later"
+  },
+  "footer": {
+    "copyright": "© 2025 Cook Wise · Powered by React, Vite, TailwindCSS, HeadlessUI"
+  }
+}
