@@ -9,7 +9,7 @@ function App() {
   const [calorie, setCalorie] = useState("");
   const [special, setSpecial] = useState("");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState(null);
   const [error, setError] = useState("");
 
   // 組合 prompt
@@ -19,7 +19,22 @@ function App() {
     if (cuisine) prompt += `料理類型：${cuisine}\n`;
     if (calorie) prompt += `熱量範圍：${calorie} 大卡\n`;
     if (special) prompt += `特殊需求：${special}\n`;
-    prompt += `請用條列式清楚呈現。`;
+    prompt += `請用條列式清楚呈現。\n`;
+    prompt += `請依照以下 JSON 格式回覆，不要有多餘說明：\n`;
+    prompt += `{
+  "title": "",
+  "description": "",
+  "ingredients": [],
+  "steps": [],
+  "nutrition": {
+    "熱量": "",
+    "蛋白質": "",
+    "脂肪": "",
+    "碳水化合物": "",
+    "其他": ""
+  },
+  "suitable": []
+}`;
     return prompt;
   };
 
@@ -31,7 +46,20 @@ function App() {
     try {
       const prompt = buildPrompt();
       const res = await fetchGemini(prompt);
-      setResult(res);
+      // 嘗試解析 JSON
+      let data = null;
+      try {
+        // 讓 Gemini 回傳有可能前後有雜訊，找出第一個 { 到最後一個 }
+        const jsonStart = res.indexOf('{');
+        const jsonEnd = res.lastIndexOf('}');
+        const jsonStr = res.substring(jsonStart, jsonEnd + 1);
+        data = JSON.parse(jsonStr);
+      } catch (e) {
+        setError("AI 回傳格式錯誤，請再試一次或調整條件");
+        setLoading(false);
+        return;
+      }
+      setResult(data);
     } catch (err) {
       setError("取得 AI 食譜失敗，請稍後再試");
     } finally {
@@ -82,9 +110,56 @@ function App() {
         {/* 結果區塊 */}
         {error && <div className="alert alert-error mb-4">{error}</div>}
         {result && (
-          <div className="card bg-base-100 shadow-xl w-full max-w-xl whitespace-pre-line p-6">
-            <h3 className="card-title mb-2">AI 食譜建議</h3>
-            <div>{result}</div>
+          <div className="card bg-base-100 shadow-xl w-full max-w-xl p-6 space-y-4">
+            {/* 標題與描述 */}
+            <div>
+              <h3 className="card-title text-2xl mb-2 flex items-center gap-2">
+                <span role="img" aria-label="recipe">🍽️</span>
+                {result.title}
+              </h3>
+              <p className="text-base-content/80 mb-2">{result.description}</p>
+            </div>
+            {/* 食材區塊 */}
+            <div>
+              <div className="divider mb-2">食材</div>
+              <ul className="list-disc ml-6">
+                {result.ingredients.map((item, idx) => (
+                  <li key={idx} className="mb-1 text-base-content/90">{item}</li>
+                ))}
+              </ul>
+            </div>
+            {/* 步驟區塊 */}
+            <div>
+              <div className="divider mb-2">步驟</div>
+              <ol className="list-decimal ml-6">
+                {result.steps.map((step, idx) => (
+                  <li key={idx} className="mb-1 text-base-content/80">{step}</li>
+                ))}
+              </ol>
+            </div>
+            {/* 營養資訊區塊 */}
+            <div>
+              <div className="divider mb-2">營養資訊</div>
+              <div className="grid grid-cols-2 gap-2">
+                {Object.entries(result.nutrition).map(([k, v]) => (
+                  <div key={k} className="badge badge-outline badge-lg px-4 py-2 flex justify-between">
+                    <span className="font-semibold mr-2">{k}：</span>
+                    <span>{v}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* 適合族群區塊 */}
+            {result.suitable && result.suitable.length > 0 && (
+              <div>
+                <div className="divider mb-2">適合族群</div>
+                <div className="flex flex-wrap gap-2">
+                  {result.suitable.map((s, idx) => (
+                    <span key={idx} className="badge badge-primary badge-outline px-3 py-2">{s}</span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
