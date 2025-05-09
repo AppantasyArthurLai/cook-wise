@@ -47,35 +47,59 @@ function App() {
         </div>
       </div>
       {/* Main content */}
-      <div className="flex-1 container mx-auto px-4 py-10 flex flex-col items-center max-w-4xl">
+      <div className="flex-1 container mx-auto px-4 py-10 flex flex-col items-center max-w-6xl">
         <div className="w-full mb-8 text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">專業 AI 廚師為您設計美味食譜</h1>
           <p className="text-gray-600">輸入您想料理的主要食材、烹飪風格和特殊需求，讓 AI 為您創建專屬食譜</p>
         </div>
-        <div className="w-full bg-white rounded-lg shadow-md p-6 border border-gray-200 mb-8">
-          <RecipeForm
-            mainIngredient={mainIngredient}
-            setMainIngredient={setMainIngredient}
-            cuisine={cuisine}
-            setCuisine={setCuisine}
-            calorie={calorie}
-            setCalorie={setCalorie}
-            special={special}
-            setSpecial={setSpecial}
-            loading={loading}
-            onSubmit={handleSubmit}
-          />
+        
+        {/* Side-by-side layout for form and result */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Recipe Form */}
+          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+            <RecipeForm
+              mainIngredient={mainIngredient}
+              setMainIngredient={setMainIngredient}
+              cuisine={cuisine}
+              setCuisine={setCuisine}
+              calorie={calorie}
+              setCalorie={setCalorie}
+              special={special}
+              setSpecial={setSpecial}
+              loading={loading}
+              onSubmit={handleSubmit}
+            />
+          </div>
+          
+          {/* Recipe Result */}
+          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200 h-fit">
+            {result ? (
+              <RecipeResult result={result} />
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-gray-500">
+                <div className="text-6xl mb-4">🍳</div>
+                <p className="text-lg font-medium">您的食譜將顯示在這裡</p>
+                <p className="text-sm">填寫左側表單並提交以獲取專屬食譜</p>
+              </div>
+            )}
+          </div>
         </div>
-        {loading && (
-          <LoadingBlock
-            mainIngredient={mainIngredient}
-            cuisine={cuisine}
-            calorie={calorie}
-            special={special}
-          />
-        )}
+        
         <ErrorAlert error={error} />
-        <RecipeResult result={result} />
+        
+        {/* Full-screen overlay LoadingBlock */}
+        {loading && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+            <div className="bg-white rounded-xl p-8 max-w-md mx-4">
+              <LoadingBlock
+                mainIngredient={mainIngredient}
+                cuisine={cuisine}
+                calorie={calorie}
+                special={special}
+              />
+            </div>
+          </div>
+        )}
       </div>
       {/* Footer */}
       <footer className="p-6 bg-gray-900 text-white mt-auto text-center">
