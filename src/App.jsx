@@ -29,11 +29,27 @@ const initialRecipes = [
 function App() {
   const [recipes] = useState(initialRecipes);
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-4xl font-bold text-center text-green-600 mb-10">AI 食譜網站</h1>
-      {recipes.map((recipe, idx) => (
-        <RecipeCard key={idx} {...recipe} />
-      ))}
+    <div className="min-h-screen bg-base-200 flex flex-col">
+      {/* Navbar */}
+      <div className="navbar bg-primary text-primary-content shadow-lg">
+        <div className="container mx-auto px-4">
+          <span className="text-2xl font-bold tracking-wide">🍳 AI 食譜網站</span>
+        </div>
+      </div>
+      {/* Main content */}
+      <div className="flex-1 container mx-auto px-4 py-10 flex flex-col items-center">
+        <div className="w-full max-w-2xl space-y-8">
+          {recipes.map((recipe, idx) => (
+            <RecipeCard key={idx} {...recipe} />
+          ))}
+        </div>
+      </div>
+      {/* Footer */}
+      <footer className="footer footer-center p-4 bg-base-300 text-base-content">
+        <aside>
+          <p>© 2025 AI 食譜網站 · Powered by React, Vite, TailwindCSS, daisyUI</p>
+        </aside>
+      </footer>
     </div>
   );
 }
