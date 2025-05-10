@@ -270,6 +270,6 @@ app.get('/api/status', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Gemini proxy server with security measures enabled, listening on http://localhost:${PORT}`);
-  console.log(`API rate limits: ${apiLimiter.max} requests per ${apiLimiter.windowMs/1000/60/60} hour`);
+  console.log(`API rate limits: ${apiLimiter ? apiLimiter.max : 100} requests per ${apiLimiter ? (apiLimiter.windowMs/1000/60/60) : 1} hour`);
   console.log(`Daily API call limit: ${apiUsageCounter.limit} calls`);
 });
