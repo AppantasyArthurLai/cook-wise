@@ -2,11 +2,20 @@
   command = "npm run build"
   publish = "dist"
 
+# API 路由轉發到 Render.com
+[[redirects]]
+  from = "/api/*"
+  to = "https://recipe-gpt-api.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+# SPA 路由設定
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
+# 確保 JavaScript 文件使用正確的 MIME 類型
 [[headers]]
   for = "/*.js"
   [headers.values]
