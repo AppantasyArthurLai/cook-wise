@@ -199,18 +199,33 @@ app.post('/api/gemini/short-sentence', async (req, res) => {
     });
   }
   
-  const { mainIngredient, cuisine, calorie, special } = req.body;
+  const { mainIngredient, cuisine, calorie, special, language = 'zh-TW' } = req.body;
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return res.status(500).json({ error: 'GEMINI_API_KEY not set' });
 
-  // 組 prompt
+  // 根據語言選擇決定提示語言
+  const isEnglish = language.startsWith('en');
+  
+  let prompt;
   let conds = [];
-  if (mainIngredient) conds.push(`主食材：${mainIngredient}`);
-  if (cuisine) conds.push(`料理類型：${cuisine}`);
-  if (calorie) conds.push(`熱量：${calorie} 大卡`);
-  if (special) conds.push(`特殊需求：${special}`);
-  const condStr = conds.length ? conds.join('，') : '無特別條件';
-  const prompt = `請根據以下條件，產生一句貼心、專屬、輕鬆的短句，用於料理等待畫面：${condStr}`;
+  
+  if (isEnglish) {
+    // 英文提示
+    if (mainIngredient) conds.push(`Main ingredient: ${mainIngredient}`);
+    if (cuisine) conds.push(`Cuisine type: ${cuisine}`);
+    if (calorie) conds.push(`Calories: ${calorie} kcal`);
+    if (special) conds.push(`Special requirements: ${special}`);
+    const condStr = conds.length ? conds.join(', ') : 'no specific conditions';
+    prompt = `Based on the following conditions, generate a friendly, personalized, light-hearted short sentence for a recipe loading screen: ${condStr}. Please respond in English.`;
+  } else {
+    // 中文提示
+    if (mainIngredient) conds.push(`主食材：${mainIngredient}`);
+    if (cuisine) conds.push(`料理類型：${cuisine}`);
+    if (calorie) conds.push(`熱量：${calorie} 大卡`);
+    if (special) conds.push(`特殊需求：${special}`);
+    const condStr = conds.length ? conds.join('，') : '無特別條件';
+    prompt = `請根據以下條件，產生一句貼心、專屬、輕鬆的短句，用於料理等待畫面：${condStr}。請用繁體中文回答。`;
+  }
 
   try {
     // 增加計數器

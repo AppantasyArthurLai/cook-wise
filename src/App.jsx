@@ -29,7 +29,16 @@ function App() {
     setError("");
     setResult(null);
     try {
-      const prompt = buildPrompt({ mainIngredient, cuisine, calorie, special });
+      // 將當前語言傳遞給 promptBuilder
+      const currentLanguage = i18n.language;
+      const prompt = buildPrompt({ 
+        mainIngredient, 
+        cuisine, 
+        calorie, 
+        special,
+        language: currentLanguage // 加入語言參數
+      });
+      
       const res = await fetchGemini(prompt);
       const data = parseGeminiResponse(res);
       setResult(data);
