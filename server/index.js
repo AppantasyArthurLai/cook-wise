@@ -25,11 +25,12 @@ const apiLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-// 允許的來源網址列表 (Referrer)
-const allowedReferrers = [
+// 允許的來源網址列表 (Origin)
+const allowedOrigins = [
   'https://unique-croquembouche-330182.netlify.app',
   'http://localhost:3000',
-  'http://localhost:5173'
+  'http://localhost:5173',
+  'http://localhost:3001'
 ];
 
 // 日誌記錄中介軟體
@@ -55,20 +56,35 @@ const logRequests = (req, res, next) => {
 };
 
 // 請求來源驗證中介軟體
-const validateReferrer = (req, res, next) => {
-  const referrer = req.get('Referrer');
+const validateOrigin = (req, res, next) => {
+  const origin = req.get('Origin');
+  const referer = req.get('Referer'); // 注意正確拼寫是 Referer
   
   // 如果是本地開發環境，直接通過
   if (process.env.NODE_ENV === 'development') {
     return next();
   }
   
-  // 檢查 referrer 是否來自允許的網址
-  if (!referrer || !allowedReferrers.some(allowed => referrer.startsWith(allowed))) {
-    return res.status(403).json({ error: 'Access denied. Invalid referrer.' });
+  // 如果是來自直接的 API 請求（沒有 Origin），允許通過
+  if (!origin && !referer) {
+    return next();
   }
   
-  next();
+  // 檢查 origin 是否在允許列表中
+  if (origin && allowedOrigins.includes(origin)) {
+    return next();
+  }
+  
+  // 如果沒有 origin 但有 referer，檢查 referer
+  if (!origin && referer && allowedOrigins.some(allowed => referer.startsWith(allowed))) {
+    return next();
+  }
+  
+  return res.status(403).json({ 
+    error: 'Access denied. Invalid origin.', 
+    origin: origin || 'none',
+    referer: referer || 'none'
+  });
 };
 
 // 用量計數器
@@ -102,11 +118,23 @@ setInterval(resetCounter, 60 * 60 * 1000); // 每小時檢查一次
 
 // 使用中介軟體
 app.use(cors({
-  origin: allowedReferrers
+  origin: function(origin, callback) {
+    // 允許沒有 origin 的請求 (如 API 編輯器或本機請求)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // 允許帶憑證的請求
+  optionsSuccessStatus: 200
 }));
+
 app.use(express.json());
 app.use(logRequests);
-app.use(validateReferrer);
+app.use(validateOrigin); // 使用新的驗證函數
 app.use('/api/', apiLimiter);
 
 app.post('/api/gemini', async (req, res) => {
