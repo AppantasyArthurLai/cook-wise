@@ -8,7 +8,10 @@ const { GoogleGenAI } = require('@google/genai');
 const rateLimit = require('express-rate-limit');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
+
+// 在雲端環境中信任代理伺服器
+app.set('trust proxy', 1);
 
 // 建立日誌目錄
 const logsDir = path.join(__dirname, 'logs');
@@ -269,7 +272,9 @@ app.get('/api/status', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Gemini proxy server with security measures enabled, listening on http://localhost:${PORT}`);
+  const isCloud = process.env.NODE_ENV === 'production';
+  console.log(`Gemini proxy server with security measures enabled, listening on ${isCloud ? `port ${PORT}` : `http://localhost:${PORT}`}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`API rate limits: ${apiLimiter ? apiLimiter.max : 100} requests per ${apiLimiter ? (apiLimiter.windowMs/1000/60/60) : 1} hour`);
   console.log(`Daily API call limit: ${apiUsageCounter.limit} calls`);
 });
