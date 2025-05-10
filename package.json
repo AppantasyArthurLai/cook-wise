@@ -7,7 +7,8 @@
     "dev:server": "node server/index.js",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node server/index.js"
   },
   "dependencies": {
     "@google/genai": "^0.13.0",
@@ -15,6 +16,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "express-ipinfo": "^1.0.0",
+    "express-rate-limit": "^7.5.0",
     "i18next": "^25.1.2",
     "i18next-browser-languagedetector": "^8.1.0",
     "react": "^17.0.2",
