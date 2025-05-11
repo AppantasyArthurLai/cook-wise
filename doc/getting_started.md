@@ -4,6 +4,32 @@
 
 Recipe GPT（藝智廚）是一個基於 AI 的食譜生成網站，使用 React 和 Node.js 開發。用戶可以通過指定主要食材、料理類型、熱量和特殊需求來獲取個性化食譜。專案使用 Google Gemini AI 作為後端 LLM，支持流式生成響應，並具有現代化的使用者界面。
 
+## 技術架構
+
+### 前端技術
+
+- **框架**：React 17 + Vite
+- **樣式**：Tailwind CSS + DaisyUI
+- **狀態管理**：React Hooks
+- **國際化**：i18next
+- **API 調用**：Fetch API
+
+### 後端技術
+
+- **框架**：Node.js + Express
+- **API 代理**：連接到 Google Gemini AI API
+- **安全性**：Helmet、CORS、速率限制
+- **日誌**：自定義中間件
+
+### 顏色主題
+
+採用專業的烹飪主題配色方案：
+- **主色調**：#E67E22（活力橘色）
+- **輔助色**：#2ECC71（清新綠色）
+- **強調色**：#3498DB（藍色點綴）
+- **背景色**：淺色系（#F8F9FA、#ECF0F1）
+- **文字色**：深色板岩灰（#2A303C）
+
 ## 環境要求
 
 - Node.js 16+ 和 npm/yarn
@@ -27,9 +53,22 @@ npm install
 
 ### 3. 配置環境變數
 
-在專案根目錄創建 `.env` 文件（或複製 `.env.example`）:
+專案使用環境特定的配置文件：
 
+**開發環境**：在專案根目錄創建 `.env.development` 文件
 ```
+# 開發環境不需要設置 VITE_API_URL，使用相對路徑和 Vite 代理
+
+# Gemini API 密鑰（後端使用）
+GEMINI_API_KEY=您的Google_Gemini_API密鑰
+```
+
+**生產環境**：在專案根目錄創建 `.env.production` 文件
+```
+# 生產環境 API URL 配置，解決 CORS 問題
+VITE_API_URL=https://recipe-gpt-api.onrender.com
+
+# Gemini API 密鑰（後端使用）
 GEMINI_API_KEY=您的Google_Gemini_API密鑰
 ```
 
@@ -88,27 +127,54 @@ npm run build
 recipe_gpt/
 ├── src/                      # 前端源代碼
 │   ├── components/           # React 組件
+│   ├── constants/            # 常數定義
 │   ├── i18n/                 # 國際化資源
 │   ├── utils/                # 工具函數
+│   ├── __tests__/            # 前端測試
 │   ├── api.js                # API 服務
 │   ├── App.jsx               # 主應用組件
 │   └── main.jsx              # 應用入口點
 ├── server/                   # 後端服務器代碼
-│   └── index.js              # Express 服務器
+│   ├── config/               # 後端配置文件
+│   ├── middleware/          # Express 中間件
+│   ├── routes/               # API 路由
+│   │   ├── gemini.js        # Gemini AI API 路由
+│   │   └── monitor.js       # 監控和狀態路由
+│   ├── utils/                # 後端工具函數
+│   └── index.js              # Express 服務器主入口
+├── __mocks__/                # 測試模擬文件
 ├── doc/                      # 項目文檔
 ├── public/                   # 靜態資源
+├── .env.development          # 開發環境變數
+├── .env.production           # 生產環境變數
 ├── dist/                     # 構建輸出 (自動生成)
 └── package.json              # 項目配置和依賴
 ```
 
 ### 關鍵文件說明
 
+#### 前端關鍵文件
+
 - **src/App.jsx**: 主應用程序組件，包含整體佈局和主要邏輯
 - **src/components/RecipeForm.jsx**: 食譜生成表單
 - **src/components/RecipeResult.jsx**: 食譜結果顯示
+- **src/components/LoadingBlock.jsx**: 載入中狀態顯示組件
+- **src/api.js**: API 調用服務，根據環境變數自動適應 API 基礎 URL
 - **src/utils/promptBuilder.js**: 構建 AI 提示的工具
 - **src/utils/parseGeminiResponse.js**: 解析 AI 返回內容的工具
-- **server/index.js**: 後端 API 服務，代理 Gemini API 請求
+
+#### 後端關鍵文件
+
+- **server/index.js**: 主要 Express 服務器入口點，包含中間件配置和連接路由
+- **server/routes/gemini.js**: Gemini API 請求處理路由
+- **server/routes/monitor.js**: 服務器狀態監控路由
+- **server/middleware/security.js**: 包含 CORS 和 API 速率限制等安全配置
+- **server/config/constants.js**: 後端常數設定，如允許的來源網址等
+
+#### 環境配置文件
+
+- **.env.development**: 開發環境變數，使用相對路徑和 Vite 代理
+- **.env.production**: 生產環境變數，配置生產 API URL 以解決 CORS 問題
 
 ## 自定義和擴展
 
@@ -195,7 +261,22 @@ module.exports = {
 
 ## 部署指南
 
-### 部署到 Netlify
+### 環境變數配置
+
+部署前請確保正確配置環境變數：
+
+1. **前端部署（如 Netlify、Vercel 等）**：
+   - 設置 `VITE_API_URL` 指向您的後端 API 服務器
+   - 例如：`VITE_API_URL=https://recipe-gpt-api.onrender.com`
+
+2. **後端部署（如 Render、Heroku 等）**：
+   - 設置 `GEMINI_API_KEY` 為有效的 Google Gemini API 密鑰
+   - 設置 `NODE_ENV=production`
+   - 根據需要配置 `PORT`
+
+### 前後端分離部署
+
+#### 1. 部署前端到 Netlify
 
 1. 在 `package.json` 中添加 build 命令：
    ```
