@@ -1,0 +1,22 @@
+--- server/index.js	2025-05-11 09:00:00
++++ server/index.js	2025-05-11 09:10:00
+@@ -132,6 +132,9 @@
+   if (!apiKey) return res.status(500).json({ error: 'GEMINI_API_KEY not set' });
+
+   try {
++    // 使用新的 API 監控模組記錄請求
++    apiMonitor.logApiCall(req, '/api/gemini');
++    
+     const ai = new GoogleGenAI({ apiKey });
+     const config = { responseMimeType: 'text/plain' };
+     const contents = [
+@@ -199,6 +202,9 @@
+   }
+
+   try {
++    // 使用新的 API 監控模組記錄請求
++    apiMonitor.logApiCall(req, '/api/gemini/short-sentence');
++    
+     const ai = new GoogleGenAI({ apiKey });
+     const config = { responseMimeType: 'text/plain' };
+     const contents = [

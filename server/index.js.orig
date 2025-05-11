@@ -131,9 +131,6 @@ app.post('/api/gemini', async (req, res) => {
   if (!apiKey) return res.status(500).json({ error: 'GEMINI_API_KEY not set' });
 
   try {
-    // 使用新的 API 監控模組記錄請求
-    apiMonitor.logApiCall(req, '/api/gemini');
-    
     const ai = new GoogleGenAI({ apiKey });
     const config = { responseMimeType: 'text/plain' };
     const contents = [
@@ -198,9 +195,6 @@ app.post('/api/gemini/short-sentence', async (req, res) => {
   }
 
   try {
-    // 使用新的 API 監控模組記錄請求
-    apiMonitor.logApiCall(req, '/api/gemini/short-sentence');
-    
     const ai = new GoogleGenAI({ apiKey });
     const config = { responseMimeType: 'text/plain' };
     const contents = [
