@@ -2,7 +2,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const GoogleGenAI = require('@google/genai');
+const { GoogleGenAI } = require('@google/genai');
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
@@ -260,10 +260,5 @@ app.get('/api/monitor/usage', (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  const isCloud = process.env.NODE_ENV === 'production';
-  console.log(`Gemini proxy server with security measures enabled, listening on ${isCloud ? `port ${PORT}` : `http://localhost:${PORT}`}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`API rate limits: ${apiLimiter ? apiLimiter.max : 100} requests per ${apiLimiter ? (apiLimiter.windowMs/1000/60/60) : 1} hour`);
-  console.log(`Daily API call limit: ${apiMonitor.apiUsageStats.total.limit} calls`);
-});
+// 將 app 導出供測試與 server.js 使用
+module.exports = app;
