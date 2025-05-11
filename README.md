@@ -39,7 +39,7 @@ Recipe GPT 使用 Tailwind CSS 與 DaisyUI 打造專業的烹飪主題界面，�
 ## 🚀 專案啟動 | Getting Started
 
 ### 先決條件 | Prerequisites
-- Node.js (v14+)
+- Node.js (v16+)
 - Google Gemini API Key
 
 ### 安裝步驟 | Installation
@@ -57,8 +57,13 @@ Recipe GPT 使用 Tailwind CSS 與 DaisyUI 打造專業的烹飪主題界面，�
 
 3. 設定環境變數 | Configure environment variables
    ```sh
-   # 建立 .env 檔案 | Create a .env file
-   echo "GEMINI_API_KEY=your_api_key_here" > .env
+   # 開發環境 | Development environment
+   # 建立 .env.development 檔案 | Create .env.development file
+   echo "GEMINI_API_KEY=your_api_key_here" > .env.development
+   
+   # 生產環境 | Production environment
+   # 建立 .env.production 檔案 | Create .env.production file
+   echo "VITE_API_URL=https://your-backend-url.com\nGEMINI_API_KEY=your_api_key_here" > .env.production
    ```
 
 4. 啟動本地開發（同時啟動前端與後端）| Start local development
@@ -99,23 +104,30 @@ Recipe GPT 使用 Tailwind CSS 與 DaisyUI 打造專業的烹飪主題界面，�
 
 ```
 recipe-gpt/
-├── index.html         # 入口 HTML | Entry HTML
-├── src/
-│   ├── App.jsx        # 主應用，狀態管理與頁面結構 | Main app, state management and page structure
-│   ├── main.jsx       # React 入口 | React entry
-│   ├── index.css      # Tailwind CSS 設定 | Tailwind CSS settings
-│   ├── api.js         # 前端 API 呼叫 | Frontend API calls
-│   ├── components/
-│   │   ├── RecipeForm.jsx     # 條件表單 | Condition form
-│   │   ├── RecipeResult.jsx   # 食譜結果顯示 | Recipe result display
-│   │   ├── LoadingBlock.jsx   # Loading 動畫與訊息 | Loading animation and messages
-│   │   └── ErrorAlert.jsx     # 錯誤訊息 | Error messages
-│   └── utils/
-│       ├── promptBuilder.js         # 自訂 prompt 組合 | Custom prompt composition
-│       └── parseGeminiResponse.js   # AI 回傳自動修正與解析 | AI response auto-correction and parsing
-├── server/
-│   └── index.js       # Express 伺服器，proxy Gemini API | Express server, Gemini API proxy
-└── .env               # 環境變數 | Environment variables
+├── index.html            # 入口 HTML | Entry HTML
+├── src/                 # 前端源代碼 | Frontend source code
+│   ├── components/      # React 組件 | React components
+│   ├── constants/       # 常數定義 | Constants definitions
+│   ├── i18n/            # 國際化資源 | Internationalization resources
+│   ├── utils/           # 工具函數 | Utility functions
+│   ├── __tests__/       # 前端測試 | Frontend tests
+│   ├── api.js           # API 調用服務 | API service
+│   ├── App.jsx          # 主應用組件 | Main application component
+│   └── main.jsx         # 應用入口點 | Application entry point
+├── server/              # 後端服務器代碼 | Backend server code
+│   ├── config/          # 後端配置文件 | Backend configuration files
+│   ├── middleware/      # Express 中間件 | Express middleware
+│   ├── routes/          # API 路由 | API routes
+│   │   ├── gemini.js    # Gemini API 路由 | Gemini API routes
+│   │   └── monitor.js   # 監控和狀態路由 | Monitor and status routes
+│   ├── utils/           # 後端工具函數 | Backend utility functions
+│   └── index.js         # Express 伺服器主入口 | Express server main entry
+├── doc/                 # 專案文檔 | Project documentation
+├── __mocks__/           # 測試模擬文件 | Test mock files
+├── public/              # 靜態資源 | Static resources
+├── .env.development     # 開發環境變數 | Development environment variables
+├── .env.production      # 生產環境變數 | Production environment variables
+└── package.json         # 專案配置和依賴 | Project configuration and dependencies
 ```
 
 ## 🔌 API 說明 | API Documentation
@@ -130,19 +142,58 @@ recipe-gpt/
 - **請求體 | Request Body**: `{ mainIngredient, cuisine, calorie, special }`
 - **回應 | Response**: 一則貼心短句（用於 loading）| A thoughtful short sentence (used for loading)
 
-## 🛠️ 技術棧 | Tech Stack
+## 👷️ 技術棧 | Tech Stack
 
-- **前端 | Frontend**: React 17, Vite, Tailwind CSS, DaisyUI
-- **後端 | Backend**: Express 5
-- **AI 整合 | AI Integration**: Google Gemini API (@google/genai)
-- **工具 | Tools**: dotenv, concurrently
+### 前端 | Frontend
+- **框架 | Framework**: React 17
+- **構建工具 | Build Tool**: Vite
+- **樣式 | Styling**: Tailwind CSS, DaisyUI
+- **狀態管理 | State Management**: React Hooks
+- **國際化 | Internationalization**: i18next
+
+### 後端 | Backend
+- **框架 | Framework**: Node.js, Express
+- **中間件 | Middleware**: Helmet (HTTP 安全標頭 | Security Headers), CORS
+- **速率限制 | Rate Limiting**: Express-rate-limit
+- **日誌 | Logging**: 自定義中間件 | Custom middleware
+
+### AI 整合 | AI Integration
+- **模型 | Model**: Google Gemini API (@google/genai)
+- **定制提示 | Custom Prompts**: 食譜產生與格式化 | Recipe generation and formatting
+
+### 工具與部署 | Tools & Deployment
+- **開發工具 | Dev Tools**: dotenv, concurrently, nodemon
+- **環境特定配置 | Environment Config**: .env.development, .env.production
+- **前端部署 | Frontend Deploy**: Netlify/Vercel
+- **後端部署 | Backend Deploy**: Render.com
 
 ## 💻 環境變數 | Environment Variables
 
-請於根目錄建立 `.env` 檔，內容如下：
-*Please create a `.env` file in the root directory with the following content:*
+專案使用環境特定的配置文件，以解決開發與生產環境的 CORS 問題：
+*The project uses environment-specific configuration files to solve CORS issues between development and production environments:*
+
+### 開發環境 | Development Environment
+
+請在根目錄建立 `.env.development` 檔案：
+*Please create a `.env.development` file in the root directory:*
 
 ```
+# 開發環境不需要設置 VITE_API_URL，使用相對路徑和 Vite 代理
+# Development environment doesn't need VITE_API_URL, it uses relative paths and Vite proxy
+
+GEMINI_API_KEY=你的金鑰
+```
+
+### 生產環境 | Production Environment
+
+請在根目錄建立 `.env.production` 檔案：
+*Please create a `.env.production` file in the root directory:*
+
+```
+# 生產環境 API URL 配置，解決 CORS 問題
+# Production environment API URL configuration to solve CORS issues
+VITE_API_URL=https://recipe-gpt-api.onrender.com
+
 GEMINI_API_KEY=你的金鑰
 ```
 
